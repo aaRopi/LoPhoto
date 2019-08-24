@@ -11,20 +11,14 @@ import UIKit
 
 class AlbumViewCell : UITableViewCell {
     
+    static let CellIdentifier = "AlbumViewCell"
+    
     @IBOutlet weak var albumSampleImageView: UIImageView!
     
     @IBOutlet weak var albumNameLabel: UILabel!
     
     @IBOutlet weak var albumDescriptionLabel: UILabel!
     
-    var model: Album?
-    {
-        didSet
-        {
-            albumNameLabel.text = model?.title
-            albumDescriptionLabel.text = model?.description
-//            albumSampleImageView.image = 
-            
-        }
-    }
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
 }

@@ -15,4 +15,24 @@ class Album {
     var description = "Album description"
     
     var sampleImageUrl: URL?
+    
+    init() {
+    }
+}
+
+extension Album {
+    convenience init?(json: [String: Any]) {
+        guard let id = json["id"] as? Int,
+        let userId = json["userId"] as? Int,
+        let title = json["title"] as? String
+        else {
+            return nil
+        }
+        
+        // initialize and set properties
+        self.init()
+        self.id = id
+        self.userId = userId
+        self.title = title
+    }
 }
