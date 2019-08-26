@@ -14,7 +14,8 @@ class AlbumViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var albumTableView: AlbumTableView!
     
     var listOfAlbums = [Album]()
-    var listOfImages: [Int: UIImage] = [:]
+    var photosInAlbums: [[Photo]] = [[]]
+    var thumbnailsForAlbums: [Int: UIImage] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,13 +40,19 @@ class AlbumViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         albumViewCell.albumNameLabel.text = album.title
         albumViewCell.albumDescriptionLabel.text = album.description
+        if let image = thumbnailsForAlbums[album.id] {
+            // now val is not nil and the Optional has been unwrapped, so use it
+            albumViewCell.albumSampleImageView.image = image
+            albumViewCell.albumSampleImageView.backgroundColor = UIColor.white
+            albumViewCell.activityIndicator.stopAnimating()
+        }
         
         return albumViewCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: AlbumViewController.ShowPhotosSegueIdentifier, sender: self)
+        performSegue(withIdentifier: AlbumViewController.ShowPhotosSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -55,59 +62,64 @@ class AlbumViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     private func loadAlbumData() {
-        // make web call
-        guard let albumUrl = URL(string: WebResources.AlbumResource) else {
-            print("Error: cannot create URL")
-            return
+        WebServices.shared.getAlbums() {
+            albums, error in
+            
+            guard let freshPhotoAlbums = albums else {
+                print("no albums here")
+                // maybe show alert with error?
+                return
+            }
+            
+            self.listOfAlbums = freshPhotoAlbums
+            DispatchQueue.main.async {
+                self.albumTableView.reloadData()
+            }
+            
+            // albums are loaded, load thumbnail images for the albums
+            self.loadAlbumPhotos()
         }
-        
-        let urlRequest = URLRequest(url: albumUrl)
-        
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) {
-            (data, response, error) in
-            // check for errors first
-            guard error == nil else {
-                print("error getting albums!")
-                print(error!)
-                return
+    }
+    
+    private func loadAlbumPhotos() {
+        for album in listOfAlbums {
+            WebServices.shared.loadAlbumPhotos(album) {
+                photos, error in
+                
+                guard let freshPhotos = photos else {
+                    print("no photos man")
+                    // maybe show alert with error?
+                    return
+                }
+                
+                if (freshPhotos.count > 0) {
+                    self.photosInAlbums.append(freshPhotos)
+                    self.loadAlbumThumbnails()
+                }
             }
-            
-            // print response to console
-            print("Response: ")
-            print(response ?? "no response")
-            
-            // did we get some data?
-            guard let responseData = data else {
-                print("No error but no data!")
-                return
-            }
-            
-            // parse JSON
-            do {
-                guard let jsonData = try JSONSerialization.jsonObject(with: responseData, options: [])
-                    as? [[String: Any]] else {
-                        print("error trying to convert data to JSON")
+        }
+    }
+    
+    private func loadAlbumThumbnails() {
+        for photos in photosInAlbums {
+            if (photos.count > 0) {
+                WebServices.shared.loadImageData(photos[0].thumbnailUrl) {
+                    data, error in
+                    
+                    guard let imageData = data else {
+                        print("no photos man")
+                        // maybe show alert with error?
                         return
                     }
-                
-                print(jsonData)
-                
-                for jsonDataPiece in jsonData {
-                    guard let album = Album(json: jsonDataPiece) else { continue }
-                    self.listOfAlbums.append(album)
+                    
+                    self.thumbnailsForAlbums[photos[0].albumId] = UIImage(data: imageData)
                 }
-                
-                DispatchQueue.main.async {
-                    self.albumTableView.reloadData()
-                }
-                
-            } catch {
-                print("error error JSON terror")
-                return
             }
         }
         
-        dataTask.resume()
+        DispatchQueue.main.async {
+            self.albumTableView.reloadData()
+        }
     }
 }
 

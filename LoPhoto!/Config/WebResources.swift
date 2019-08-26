@@ -11,5 +11,5 @@ import Foundation
 struct WebResources {
     static let AlbumResource = "https://jsonplaceholder.typicode.com/albums"
     
-    static let PhotosResource = "https://jsonplaceholder.typicode.com/photos"
+    static let PhotosResource = "https://jsonplaceholder.typicode.com/photos"    
 }

@@ -15,3 +15,24 @@ class Photo {
     var url = "https://fake-image-fake-url"
     var thumbnailUrl = "https://fake-thumbnail-fake-url"
 }
+
+extension Photo {
+    convenience init?(json: [String: Any]) {
+        guard let id = json["id"] as? Int,
+        let albumId = json["albumId"] as? Int,
+        let title = json["title"] as? String,
+        let url = json["url"] as? String,
+        let thumbnailUrl = json["thumbnailUrl"] as? String
+        else {
+            return nil
+        }
+        
+        // initialize and set properties
+        self.init()
+        self.id = id
+        self.albumId = albumId
+        self.title = title
+        self.url = url
+        self.thumbnailUrl = thumbnailUrl
+    }
+}

@@ -21,6 +21,7 @@
 		2901F71323104F2A005A89C4 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2901F71223104F2A005A89C4 /* PhotosViewController.swift */; };
 		2901F71523108D83005A89C4 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2901F71423108D83005A89C4 /* Photo.swift */; };
 		2901F71723108E31005A89C4 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2901F71623108E31005A89C4 /* PhotoCollectionViewCell.swift */; };
+		2901F71A2311845C005A89C4 /* WebServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2901F7192311845C005A89C4 /* WebServices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		2901F71223104F2A005A89C4 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		2901F71423108D83005A89C4 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		2901F71623108E31005A89C4 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		2901F7192311845C005A89C4 /* WebServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServices.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 		2901F6D7230F39BC005A89C4 /* LoPhoto! */ = {
 			isa = PBXGroup;
 			children = (
+				2901F71823118310005A89C4 /* Services */,
 				2901F70F2310376C005A89C4 /* Config */,
 				2901F708230F3E78005A89C4 /* Views */,
 				2901F707230F3A71005A89C4 /* Models */,
@@ -176,6 +179,14 @@
 				2901F71023103783005A89C4 /* WebResources.swift */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		2901F71823118310005A89C4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2901F7192311845C005A89C4 /* WebServices.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,6 +326,7 @@
 				2901F71123103783005A89C4 /* WebResources.swift in Sources */,
 				2901F70A230F3EAD005A89C4 /* AlbumViewCell.swift in Sources */,
 				2901F71723108E31005A89C4 /* PhotoCollectionViewCell.swift in Sources */,
+				2901F71A2311845C005A89C4 /* WebServices.swift in Sources */,
 				2901F71323104F2A005A89C4 /* PhotosViewController.swift in Sources */,
 				2901F70C230F3EFE005A89C4 /* AlbumTableView.swift in Sources */,
 				2901F70E230F3FB9005A89C4 /* Album.swift in Sources */,
